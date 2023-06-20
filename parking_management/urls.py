@@ -16,7 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.generic import TemplateView
+from .views import get_json_schema
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path(
+        "docs/",
+        TemplateView.as_view(
+            template_name="swagger.html",
+            extra_context={"schema_url": "openapi-schema"},
+        ),
+        name="swagger-ui",
+    ),
+    path("get_json_schema/", get_json_schema, name="openapi-schema"),
+
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
