@@ -12,7 +12,7 @@ This is a parking management system that allows park/unpark cars. The system als
 4. Install the requirements using the command `pip install -r requirements.txt`
 5. Start the redis server using the command `sudo systemctl start redis-server`
 6. Update .env file with the required values
-7. Run the command "python manage.py runserver" to start the server
+7. Run the command `python manage.py runserver` to start the server
 
 ## Tools Used
 
