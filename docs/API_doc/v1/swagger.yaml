@@ -4,10 +4,10 @@ info:
   title: API Documentation for the project "Parking Management"
   description: |
     This is the API documentation for the project "Parking Management" which
-    involve 4 different APIs.
+    involves different APIs.
 
 servers:
-  - url: http://localhost:8080/api/v1/
+  - url: http://localhost:8000/api/v1/
     description: Local server
 
 paths:
@@ -55,29 +55,11 @@ paths:
                         example: admin
                 example:
                   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-                  user:
-                    id: 1
-                    username: 'admin'
-                    role: admin
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Username or password is incorrect
-                example:
-                  message: Username or password is incorrect
 
-  '/park/':
+  '/auth/register':
     post:
-      summary: Create a new park object
-      description: |
-        Create a new park object which takes number plate as parameter and
-        return the JSON object of the park object or error message if slot is full
+      summary: Register
+      description: Register to the system
       requestBody:
         required: true
         content:
@@ -85,11 +67,59 @@ paths:
             schema:
               type: object
               properties:
-                number_plate:
+                username:
                   type: string
-                  example: '1234'
+                  example: admin
+                password:
+                  type: string
+                  example: admin
               required:
-                - number_plate
+                - username
+                - password
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      username:
+                        type: string
+                        example: admin
+                      role:
+                        type: string
+                        example: admin
+                example:
+                  message: 'User created successfully'
+                  details: { 'username': 'admin', 'password': 'admin' }
+
+  '/parking-lot/':
+    post:
+      summary: Create a new parking lot
+      description: |
+        Create a new parking lot which takes name as a parameter and
+        return the JSON object of the parking lot or an error message if the name is already taken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 'NewTown'
+              required:
+                - name
       responses:
         '200':
           description: OK
@@ -101,7 +131,45 @@ paths:
                   id:
                     type: integer
                     example: 1
-                  number_plate:
+                  name:
+                    type: string
+                    example: 'A'
+                example:
+                  message: Parking lot created successfully
+                  details:
+                    id: 931ca6ad68fff450929dec2dd734103a
+                    name: NewTown
+
+  '/vehicle/park/':
+    post:
+      summary: Create a new park object
+      description: |
+        Create a new park object which takes a number plate as a parameter and
+        return the JSON object of the park object or an error message if the slot is full
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vehicle_number:
+                  type: string
+                  example: 'DL-01-HH-1235'
+              required:
+                - vehicle_number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  vehicle_number:
                     type: string
                     example: '1234'
                   created_at:
@@ -128,48 +196,36 @@ paths:
                       updated_at:
                         type: string
                         example: '2021-05-30T15:00:00.000Z'
-                      status:
-                        type: string
-                        example: 'available'
+                      is_occupied:
+                        type: boolean
+                        example: true
                 example:
-                  id: 1
-                  number_plate: '1234'
-                  created_at: '2021-05-30T15:00:00.000Z'
-                  updated_at: '2021-05-30T15:00:00.000Z'
-                  status: 'parked'
-                  slot:
+                  message: Vehicle parked in slot 1
+                  details:
                     id: 1
-                    name: 'A1'
-                    created_at: '2021-05-30T15:00:00.000Z'
-                    updated_at: '2021-05-30T15:00:00.000Z'
-                    status: 'available'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Slot is full
-                example:
-                  message: Slot is full
+                    vehicle_number: DL-01-HH-1235
+                    is_occupied: true
+                    parking_lot_id: 931ca6ad68fff450929dec2dd734103a
 
-  '/unpark/{number_plate}':
+  '/vehicle/unpark/':
     put:
       summary: Unpark a parked vehicle
       description: |
-        Unpark a parked vehicle which takes number plate as parameter, finds
-        the car and frees the slot, returns a JSON with information about the car and the
+        Unpark a parked vehicle which takes a number plate as a parameter, finds
+        the car, frees the slot, and returns a JSON with information about the car and the
         slot, or an error message if the car is not found.
-      parameters:
-        - in: path
-          name: number_plate
-          schema:
-            type: string
-          required: true
-          description: The number plate of the car to unpark
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vehicle_number:
+                  type: string
+                  example: 'DL-01-HH-1235'
+              required:
+                - vehicle_number
       responses:
         '200':
           description: OK
@@ -181,7 +237,7 @@ paths:
                   id:
                     type: integer
                     example: 1
-                  number_plate:
+                  vehicle_number:
                     type: string
                     example: '1234'
                   created_at:
@@ -190,66 +246,33 @@ paths:
                   updated_at:
                     type: string
                     example: '2021-05-30T15:00:00.000Z'
-                  status:
-                    type: string
-                    example: 'parked'
-                  slot:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      name:
-                        type: string
-                        example: 'A1'
-                      created_at:
-                        type: string
-                        example: '2021-05-30T15:00:00.000Z'
-                      updated_at:
-                        type: string
-                        example: '2021-05-30T15:00:00.000Z'
-                      status:
-                        type: string
-                        example: 'available'
-                example:
-                  id: 1
-                  number_plate: '1234'
-                  created_at: '2021-05-30T15:00:00.000Z'
-                  updated_at: '2021-05-30T15:00:00.000Z'
-                  status: 'parked'
-                  slot:
-                    id: 1
-                    name: 'A1'
-                    created_at: '2021-05-30T15:00:00.000Z'
-                    updated_at: '2021-05-30T15:00:00.000Z'
-                    status: 'available'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Car not found
-                example:
-                  message: Car not found
+                  is_occupied:
+                    type: boolean
+                    example: false
 
-  '/slot/{slot_id}/':
+                example:
+                  message: Vehicle unparked from 2
+                  details:
+                    id: 2
+                    vehicle_number: null
+                    is_occupied: false
+                    parking_lot_id: 931ca6ad68fff450929dec2dd734103a
+
+  '/park/slot/':
     get:
       summary: Get information about a slot
       description: |
-        Get information about a slot which takes slot id as parameter and
-        return the JSON object of about the slot if it is empty or not and the license
+        Get information about a slot which takes a slot id as a parameter and
+        return the JSON object about the slot, including whether it is empty or not and the license
         plate of the parked car (if any)
       parameters:
-        - in: path
-          name: slot_id
+        - name: slot_id
+          in: query
+          description: ID of the slot
+          required: true
           schema:
             type: integer
-          required: true
-          description: The id of the slot
+            example: 1
       responses:
         '200':
           description: OK
@@ -270,16 +293,16 @@ paths:
                   updated_at:
                     type: string
                     example: '2021-05-30T15:00:00.000Z'
-                  status:
-                    type: string
-                    example: 'available'
-                  park:
+                  is_occupied:
+                    type: boolean
+                    example: true
+                  vehicle:
                     type: object
                     properties:
                       id:
                         type: integer
                         example: 1
-                      number_plate:
+                      vehicle_number:
                         type: string
                         example: '1234'
                       created_at:
@@ -288,38 +311,13 @@ paths:
                       updated_at:
                         type: string
                         example: '2021-05-30T15:00:00.000Z'
-                      status:
-                        type: string
-                        example: 'parked'
+                      is_occupied:
+                        type: boolean
+                        example: true
                 example:
-                  id: 1
-                  name: 'A1'
-                  created_at: '2021-05-30T15:00:00.000Z'
-                  updated_at: '2021-05-30T15:00:00.000Z'
-                  status: 'available'
-                  park:
-                    id: 1
-                    number_plate: '1234'
-                    created_at: '2021-05-30T15:00:00.000Z'
-                    updated_at: '2021-05-30T15:00:00.000Z'
-                    status: 'parked'
-                example2:
-                  id: 1
-                  name: 'A1'
-                  created_at: '2021-05-30T15:00:00.000Z'
-                  updated_at: '2021-05-30T15:00:00.000Z'
-                  status: 'unavailable'
-                  park: null
-
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Slot not found
-                example:
-                  message: Slot not found
+                  message: Slot details
+                  details:
+                    id: 2
+                    vehicle_number: null
+                    is_occupied: false
+                    parking_lot_id: 931ca6ad68fff450929dec2dd734103a

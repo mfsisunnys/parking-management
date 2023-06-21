@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-^3fm5bxo8%&^$)@vto%n0sp_=7o*17o28bir21wem8ar9&k6n$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -79,7 +79,7 @@ WSGI_APPLICATION = "parking_management.wsgi.application"
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://localhost:6379/0",
+        "LOCATION": config("REDIS_URL"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
@@ -132,9 +132,9 @@ USE_TZ = True
 REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
-        "rest_framework.throttling.UserRateThrottle",
     ],
-    "DEFAULT_THROTTLE_RATES": {"anon": "4/minute", "user": "10/minute"},
+    "DEFAULT_THROTTLE_RATES": {"anon": config("ANON_THROTTLE_RATE")},
+    "DEFAULT_AUTHENTICATION_CLASSES": [],
 }
 
 

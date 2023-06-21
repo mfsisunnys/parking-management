@@ -22,7 +22,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     path(
         "docs/",
         TemplateView.as_view(
@@ -34,6 +34,5 @@ urlpatterns = [
     path("get_json_schema/", get_json_schema, name="openapi-schema"),
     path("api/v1/", include("park_management.urls")),
     path("api/v1/park/slot/", include("slot_management.urls")),
-
+    path("api/v1/auth/", include("authentication_management.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
