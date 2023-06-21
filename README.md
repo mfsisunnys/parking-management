@@ -11,7 +11,7 @@ This is a parking management system that allows park/unpark cars. The system als
 3. Activate the virtual environment using the command `source venv/bin/activate`
 4. Install the requirements using the command `pip install -r requirements.txt`
 5. Start the redis server using the command `sudo systemctl start redis-server`
-6. Update .env file with the required values
+6. Update .env file with the required values. For example, see .env.example
 7. Run the command `python manage.py runserver` to start the server
 
 ## Tools Used
