@@ -24,7 +24,7 @@ This is a parking management system that allows park/unpark cars. The system als
 
 ## API Documentation
 
-The API documentation can be found at http://localhost:8000/docs/
+The API documentation has been created using OpenAPI Specification standard and can be found at http://localhost:8000/docs/
 
 ## API Endpoints
 
