@@ -1,0 +1,455 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API Documentation for the project \"Parking Management\"",
+    "description": "This is the API documentation for the project \"Parking Management\" which\ninvolves different APIs.\n"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api/v1/",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Login",
+        "description": "Login to the system",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "admin"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "admin"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "username": {
+                          "type": "string",
+                          "example": "admin"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "admin"
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Register",
+        "description": "Register to the system",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "admin"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "admin"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "username": {
+                          "type": "string",
+                          "example": "admin"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "admin"
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "message": "User created successfully",
+                    "details": {
+                      "username": "admin",
+                      "password": "admin"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/parking-lot/": {
+      "post": {
+        "summary": "Create a new parking lot",
+        "description": "Create a new parking lot which takes name as a parameter and\nreturn the JSON object of the parking lot or an error message if the name is already taken\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "NewTown"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "A"
+                    }
+                  },
+                  "example": {
+                    "message": "Parking lot created successfully",
+                    "details": {
+                      "id": "931ca6ad68fff450929dec2dd734103a",
+                      "name": "NewTown"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vehicle/park/": {
+      "post": {
+        "summary": "Create a new park object",
+        "description": "Create a new park object which takes a number plate as a parameter and\nreturn the JSON object of the park object or an error message if the slot is full\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "vehicle_number": {
+                    "type": "string",
+                    "example": "DL-01-HH-1235"
+                  }
+                },
+                "required": [
+                  "vehicle_number"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "vehicle_number": {
+                      "type": "string",
+                      "example": "1234"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "example": "2021-05-30T15:00:00.000Z"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "example": "2021-05-30T15:00:00.000Z"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "parked"
+                    },
+                    "slot": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "A1"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2021-05-30T15:00:00.000Z"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "example": "2021-05-30T15:00:00.000Z"
+                        },
+                        "is_occupied": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "message": "Vehicle parked in slot 1",
+                    "details": {
+                      "id": 1,
+                      "vehicle_number": "DL-01-HH-1235",
+                      "is_occupied": true,
+                      "parking_lot_id": "931ca6ad68fff450929dec2dd734103a"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vehicle/unpark/": {
+      "put": {
+        "summary": "Unpark a parked vehicle",
+        "description": "Unpark a parked vehicle which takes a number plate as a parameter, finds\nthe car, frees the slot, and returns a JSON with information about the car and the\nslot, or an error message if the car is not found.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "vehicle_number": {
+                    "type": "string",
+                    "example": "DL-01-HH-1235"
+                  }
+                },
+                "required": [
+                  "vehicle_number"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "vehicle_number": {
+                      "type": "string",
+                      "example": "1234"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "example": "2021-05-30T15:00:00.000Z"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "example": "2021-05-30T15:00:00.000Z"
+                    },
+                    "is_occupied": {
+                      "type": "boolean",
+                      "example": false
+                    }
+                  },
+                  "example": {
+                    "message": "Vehicle unparked from 2",
+                    "details": {
+                      "id": 2,
+                      "vehicle_number": null,
+                      "is_occupied": false,
+                      "parking_lot_id": "931ca6ad68fff450929dec2dd734103a"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/park/slot/": {
+      "get": {
+        "summary": "Get information about a slot",
+        "description": "Get information about a slot which takes a slot id as a parameter and\nreturn the JSON object about the slot, including whether it is empty or not and the license\nplate of the parked car (if any)\n",
+        "parameters": [
+          {
+            "name": "slot_id",
+            "in": "query",
+            "description": "ID of the slot",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "A1"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "example": "2021-05-30T15:00:00.000Z"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "example": "2021-05-30T15:00:00.000Z"
+                    },
+                    "is_occupied": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "vehicle": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "vehicle_number": {
+                          "type": "string",
+                          "example": "1234"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2021-05-30T15:00:00.000Z"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "example": "2021-05-30T15:00:00.000Z"
+                        },
+                        "is_occupied": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "message": "Slot details",
+                    "details": {
+                      "id": 2,
+                      "vehicle_number": null,
+                      "is_occupied": false,
+                      "parking_lot_id": "931ca6ad68fff450929dec2dd734103a"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
