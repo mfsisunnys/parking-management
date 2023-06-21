@@ -19,7 +19,7 @@ This is a parking management system that allows park/unpark cars. The system als
 1. Python
 2. Django
 3. Django Rest Framework
-4. SQLite
+4. Redis
 5. Swagger
 
 ## API Documentation
