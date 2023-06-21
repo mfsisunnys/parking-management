@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.views.generic import TemplateView
 from .views import get_json_schema
 from django.conf import settings
@@ -32,6 +32,8 @@ urlpatterns = [
         name="swagger-ui",
     ),
     path("get_json_schema/", get_json_schema, name="openapi-schema"),
+    path("api/v1/", include("park_management.urls")),
+    path("api/v1/park/slot/", include("slot_management.urls")),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
