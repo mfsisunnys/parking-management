@@ -10,6 +10,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from rest_framework.decorators import throttle_classes
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
+
 
 # Create your views here.
 
@@ -28,6 +31,7 @@ def check_existing_vehicle(vehicle_number):
         return False, None
 
 
+@throttle_classes([AnonRateThrottle])
 @api_view(["POST"])
 def parkingLot(request):
     """
@@ -61,6 +65,7 @@ def parkingLot(request):
         )
 
 
+@throttle_classes([AnonRateThrottle])
 @api_view(["POST"])
 def park(request):
     """
@@ -146,13 +151,17 @@ def park(request):
 
             else:
                 return Response(
-                    f"Vehicle already parked in slot {slot_id}",
-                    status=status.HTTP_200_OK,
+                    {
+                        "message": f"Vehicle already parked in slot {slot_id}",
+                        "details": None,
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
     except Exception as e:
         return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+@throttle_classes([AnonRateThrottle])
 @api_view(["PUT"])
 def unpark(request):
     """

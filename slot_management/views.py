@@ -9,8 +9,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
-
-import hashlib
+from rest_framework.decorators import throttle_classes
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 
 # Create your views here.
 
@@ -18,6 +18,9 @@ total_slots = config("TOTAL_SLOTS")
 
 
 def check_existing_vehicle(vehicle_number):
+    """
+    This function checks if the vehicle is already parked in the parking lot
+    """
     totalSlots = cache.get("Slot")
     if totalSlots is None:
         return False
@@ -29,10 +32,15 @@ def check_existing_vehicle(vehicle_number):
         return False, None
 
 
+@throttle_classes([AnonRateThrottle])
 @api_view(["GET"])
 def get_slot_detail(request):
+    """
+    This function returns the slot details for a given slot id
+    """
     try:
         slot_id = request.GET.get("slot_id")
+
         if slot_id is None or slot_id == "":
             return Response(
                 {"message": "Please provide slot id", "details": None},
