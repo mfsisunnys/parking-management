@@ -1,4 +1,4 @@
-#Parking Management
+# Parking Management
 
 ## Description
 
@@ -7,10 +7,10 @@ This is a parking management system that allows park/unpark cars. The system als
 ## Installation
 
 1. Clone the repository
-2. Create a virtual environment using the command "python3 -m venv venv"
-3. Activate the virtual environment using the command "source venv/bin/activate"
-4. Install the requirements using the command "pip install -r requirements.txt"
-5. Start the redis server using the command "sudo systemctl start redis-server"
+2. Create a virtual environment using the command `python3 -m venv venv"`
+3. Activate the virtual environment using the command `source venv/bin/activate`
+4. Install the requirements using the command `pip install -r requirements.txt`
+5. Start the redis server using the command `sudo systemctl start redis-server`
 6. Update .env file with the required values
 7. Run the command "python manage.py runserver" to start the server
 
@@ -47,4 +47,4 @@ The API documentation can be found at http://localhost:8000/docs/
 
 ## Unit Tests
 
-The unit tests can be run using the command "python manage.py test"
+The unit tests can be run using the command `python manage.py test`
