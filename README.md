@@ -11,20 +11,20 @@ This is a parking management system that allows park/unpark cars. The system als
 3. Activate the virtual environment using the command `source venv/bin/activate`
 4. Install the requirements using the command `pip install -r requirements.txt`
 5. Start the redis server using the command `sudo systemctl start redis-server`
-6. Update .env file with the required values
-7. Run the command "python manage.py runserver" to start the server
+6. Update .env file with the required values. For example, see .env.example
+7. Run the command `python manage.py runserver` to start the server
 
 ## Tools Used
 
 1. Python
 2. Django
 3. Django Rest Framework
-4. SQLite
+4. Redis
 5. Swagger
 
 ## API Documentation
 
-The API documentation can be found at http://localhost:8000/docs/
+The API documentation has been created using OpenAPI Specification standard and can be found at http://localhost:8000/docs/
 
 ## API Endpoints
 
